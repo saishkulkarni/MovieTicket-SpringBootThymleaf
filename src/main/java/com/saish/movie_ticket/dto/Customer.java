@@ -2,6 +2,8 @@ package com.saish.movie_ticket.dto;
 
 import java.time.LocalDate;
 
+import org.springframework.stereotype.Component;
+
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Email;
@@ -13,6 +15,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
+@Component
 public class Customer {
 	@Size(min = 3, max = 20, message = "* Enter between 3~20 charecters")
 	private String name;

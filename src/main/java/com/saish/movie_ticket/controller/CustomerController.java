@@ -1,6 +1,8 @@
 package com.saish.movie_ticket.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,9 +15,13 @@ import jakarta.validation.Valid;
 @Controller
 @RequestMapping("/customer")
 public class CustomerController {
+	
+	@Autowired
+	Customer customer;
 
 	@GetMapping("/signup")
-	public String loadSignup() {
+	public String loadSignup(ModelMap map) {
+		map.put("customer", customer);
 		return "customer-signup.html";
 	}
 
