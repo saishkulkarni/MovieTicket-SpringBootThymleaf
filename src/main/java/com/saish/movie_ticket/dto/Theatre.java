@@ -35,6 +35,9 @@ public class Theatre {
 	@Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$", message = "* Enter 8 charecters with one lowercase, one uppercase, one number and one special charecter")
 	@Transient
 	private String confirmPassword;
+	@NotEmpty(message = "* It is Compulsory Field")
+	private String address;
+	@NotEmpty(message = "* It is Compulsory Field")
 	private String licenceNumber;
 
 }
