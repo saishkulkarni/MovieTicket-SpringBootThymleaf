@@ -9,15 +9,24 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.saish.movie_ticket.dto.Customer;
+import com.saish.movie_ticket.helper.AES;
+import com.saish.movie_ticket.repository.CustomerRepository;
+import com.saish.movie_ticket.repository.TheatreRepository;
 
 import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("/customer")
 public class CustomerController {
-	
+
 	@Autowired
 	Customer customer;
+
+	@Autowired
+	CustomerRepository customerRepository;
+
+	@Autowired
+	TheatreRepository theatreRepository;
 
 	@GetMapping("/signup")
 	public String loadSignup(ModelMap map) {
@@ -26,15 +35,24 @@ public class CustomerController {
 	}
 
 	@PostMapping("/signup")
-	public String signup(@Valid Customer customer,BindingResult result) {
-		if(result.hasErrors()) {
-			return "customer-signup.html";
+	public String signup(@Valid Customer customer, BindingResult result) {
+		if (!customer.getPassword().equals(customer.getConfirmPassword())) {
+			result.rejectValue("confirmPassword", "error.confirmPassword", "* Password Missmatch");
 		}
-		else {
-		System.out.println("*****************************");
-		System.out.println(customer);
-		System.out.println("*****************************");
-		return "home.html";
+		if (customerRepository.existsByEmail(customer.getEmail())
+				|| theatreRepository.existsByEmail(customer.getEmail())) {
+			result.rejectValue("email", "error.email", "* Account Already Exists");
+		}
+		if (customerRepository.existsByMobile(customer.getMobile())
+				|| theatreRepository.existsByMobile(customer.getMobile())) {
+			result.rejectValue("mobile", "error.mobile", "* Account Already Exists");
+		}
+
+		if (result.hasErrors()) {
+			return "customer-signup.html";
+		} else {
+			customer.setPassword(AES.encrypt(customer.getPassword(), "123"));
+			return "home.html";
 		}
 	}
 }

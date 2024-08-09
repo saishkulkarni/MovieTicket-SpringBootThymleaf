@@ -6,62 +6,7 @@
     <title>Movie-Ticket - Customer Registration</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <style>
-        :root {
-            --primary-color: #1a237e;
-            --secondary-color: #ff4081;
-            --background-color: #f5f5f5;
-            --text-color: #333;
-        }
-        body {
-            font-family: 'Roboto', sans-serif;
-            background-color: var(--background-color);
-            color: var(--text-color);
-        }
-        .navbar {
-            background-color: var(--primary-color);
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        .navbar-brand {
-            font-weight: bold;
-            font-size: 1.5rem;
-        }
-        .nav-link {
-            font-weight: 500;
-            transition: color 0.3s ease;
-        }
-        .nav-link:hover {
-            color: var(--secondary-color) !important;
-        }
-        .form-container {
-            background-color: white;
-            border-radius: 10px;
-            padding: 30px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        .btn-primary {
-            background-color: var(--secondary-color);
-            border-color: var(--secondary-color);
-            padding: 10px 20px;
-            font-weight: bold;
-            transition: all 0.3s ease;
-        }
-        .btn-primary:hover {
-            background-color: #e91e63;
-            border-color: #e91e63;
-            transform: translateY(-2px);
-        }
-        .footer {
-            background-color: var(--primary-color);
-            color: white;
-            padding: 20px 0;
-            margin-top: 50px;
-        }
-        
-        span{
-        	color:red;
-        }
-    </style>
+    <link rel="stylesheet" href="/css/signup.css">
 </head>
 <body>
     <th:block th:insert="~{fragments/navbar.html}"></th:block>
@@ -87,7 +32,7 @@
                             <input th:field="*{email}" type="text" class="form-control" id="email" name="email">
                        	 <span th:errors="*{email}"></span>
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-3" >
                             <label for="password" class="form-label">Password</label>
                             <input th:field="*{password}" type="password" class="form-control" id="password" name="password">
                         	 <span th:errors="*{password}"></span>
