@@ -44,4 +44,6 @@ public class Customer {
 	@Past(message = "* Enter proper DOB")
 	@NotNull(message = "* It is Compulsory Field")
 	private LocalDate dob;
+	private int otp;
+	private boolean verified;
 }

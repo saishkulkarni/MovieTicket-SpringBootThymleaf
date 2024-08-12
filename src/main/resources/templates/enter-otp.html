@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Enter OTP</title>
+<style>
+body {
+	font-family: Arial, sans-serif;
+	background-color: #f4f4f4;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+	margin: 0;
+}
+
+.container {
+	background-color: #ffffff;
+	padding: 30px;
+	border-radius: 5px;
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+	text-align: center;
+}
+
+h1 {
+	color: #333;
+	margin-bottom: 20px;
+}
+
+form {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+label {
+	font-weight: bold;
+	margin-bottom: 10px;
+}
+
+input[type="text"] {
+	width: 200px;
+	padding: 10px;
+	margin-bottom: 20px;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	font-size: 16px;
+}
+
+button {
+	background-color: #4CAF50;
+	color: white;
+	border: none;
+	padding: 10px 20px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 16px;
+	margin: 4px 2px;
+	cursor: pointer;
+	border-radius: 4px;
+	transition: background-color 0.3s;
+}
+
+button:hover {
+	background-color: #45a049;
+}
+</style>
+</head>
+<body>
+	<th:block th:insert="~{fragments/message.html}"></th:block>
+	<div class="container">
+		<h1>Enter OTP</h1>
+		<form action="/customer/verify-otp" method="post">
+			<input type="hidden" name="id" th:value="${session.id}"> <label
+				for="otp">Enter OTP:</label> <input type="text" id="otp" name="otp"
+				required>
+			<button type="submit">Submit</button>
+		</form>
+	</div>
+</body>
+</html>

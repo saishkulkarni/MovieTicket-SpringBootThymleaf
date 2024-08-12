@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background-color: #ffffff;
+            border-radius: 5px;
+            padding: 30px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        .otp-container {
+            background-color: #e8f4fd;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin-top: 20px;
+        }
+        .otp {
+            font-size: 24px;
+            font-weight: bold;
+            color: #3498db;
+        }
+        .footer {
+            margin-top: 30px;
+            font-size: 12px;
+            color: #7f8c8d;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Hello, <span th:text="${customer.name}"></span>!</h1>
+        <p>We've generated a One-Time Password (OTP) for you. Please use this OTP to complete your verification process.</p>
+        <div class="otp-container">
+            <h2>Your OTP is: <span class="otp" th:text="${customer.otp}"></span></h2>
+        </div>
+        <p>This OTP is valid for a limited time. Please do not share it with anyone.</p>
+        <div class="footer">
+            <p>This is an automated message. Please do not reply to this email.</p>
+        </div>
+    </div>
+</body>
+</html>
