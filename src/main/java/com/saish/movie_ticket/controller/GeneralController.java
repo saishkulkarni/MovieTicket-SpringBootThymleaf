@@ -46,7 +46,7 @@ public class GeneralController {
 			Customer customer = customerRepository.findByMobile(mobile);
 			Theatre theatre = theatreRepository.findByMobile(mobile);
 			if (customer == null && theatre == null) {
-				session.setAttribute("failure", "Invalid Email");
+				session.setAttribute("failure", "Invalid Mobile");
 				return "redirect:/login";
 			} else {
 				if (customer != null) {

@@ -1,34 +1,10 @@
-:root {
-            --primary-color: #1a237e;
-            --secondary-color: #ff4081;
-            --background-color: #f5f5f5;
-            --text-color: #333;
-        }
-        body {
-            font-family: 'Roboto', sans-serif;
-            background-color: var(--background-color);
-            color: var(--text-color);
-        }
-        .navbar {
-            background-color: var(--primary-color);
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        .navbar-brand {
-            font-weight: bold;
-            font-size: 1.5rem;
-        }
-        .nav-link {
-            font-weight: 500;
-            transition: color 0.3s ease;
-        }
-        .nav-link:hover {
-            color: var(--secondary-color) !important;
-        }
+
         .form-container {
             background-color: white;
             border-radius: 10px;
             padding: 30px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            min-height: 100vh;
         }
         .btn-primary {
             background-color: var(--secondary-color);
@@ -41,12 +17,6 @@
             background-color: #e91e63;
             border-color: #e91e63;
             transform: translateY(-2px);
-        }
-        .footer {
-            background-color: var(--primary-color);
-            color: white;
-            padding: 20px 0;
-            margin-top: 50px;
         }
         
         span{
