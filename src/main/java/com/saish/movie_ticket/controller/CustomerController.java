@@ -70,7 +70,8 @@ public class CustomerController {
 	}
 
 	@GetMapping("/enter-otp")
-	public String enterOtp() {
+	public String enterOtp(ModelMap map) {
+		map.put("user", "customer");
 		return "enter-otp.html";
 	}
 

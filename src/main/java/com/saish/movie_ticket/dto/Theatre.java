@@ -39,5 +39,8 @@ public class Theatre {
 	private String address;
 	@NotEmpty(message = "* It is Compulsory Field")
 	private String licenceNumber;
+	private int otp;
+	private boolean verified;
+	private boolean approved;
 
 }
