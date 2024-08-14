@@ -1,6 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark">
 	<div class="container">
-		<a class="navbar-brand" href="/">MovieTicket</a>
+		<a class="navbar-brand" href="/"><i class="fas fa-film"></i>
+			MovieTicket</a>
 		<button class="navbar-toggler" type="button" data-bs-toggle="collapse"
 			data-bs-target="#navbarNav" aria-controls="navbarNav"
 			aria-expanded="false" aria-label="Toggle navigation">
@@ -8,7 +9,6 @@
 		</button>
 		<div class="collapse navbar-collapse" id="navbarNav">
 			<ul class="navbar-nav ms-auto">
-
 				<li class="nav-item"><a class="nav-link" href="/"><i
 						class="fas fa-home"></i> Home</a></li>
 
@@ -17,35 +17,36 @@
 					<li class="nav-item"><a class="nav-link"
 						href="/customer/signup"><i class="fas fa-user-plus"></i>
 							Register</a></li>
-
 					<li class="nav-item"><a class="nav-link" href="/login"><i
 							class="fas fa-sign-in-alt"></i> Login</a></li>
 				</th:block>
+
 				<li class="nav-item" th:if="${session.admin}"><a
 					class="nav-link" href="/admin/approve-theatre"><i
-						class="fas fa-sign-in-alt"></i> Approve Theatre</a></li>
+						class="fas fa-check-circle"></i> Approve Theatre</a></li>
+				<th:block th:if="${session.customer}">
+					<li class="nav-item"><a class="nav-link" href="/login"><i
+							class="fas fa-film"></i> Movies</a></li>
+					<li class="nav-item"><a class="nav-link"
+						href="/customer/previous-booking"><i class="fas fa-history"></i>
+							Previous Bookings</a></li>
+				</th:block>
+				<th:block th:if="${session.theatre}">
+					<li class="nav-item"><a class="nav-link"
+						href="/theatre/add-movie"><i class="fas fa-plus-circle"></i>
+							Add Movie</a></li>
+					<li class="nav-item"><a class="nav-link"
+						href="/theatre/dashboard-movie"><i class="fas fa-chart-line"></i>
+							Movie Dashboard</a></li>
+				</th:block>
 
-				<li class="nav-item" th:if="${session.theatre}"><a
-					class="nav-link" href="/theatre/add-movie"><i
-						class="fas fa-sign-in-alt"></i> Add Movie</a></li>
 
-				<li class="nav-item" th:if="${session.theatre}"><a
-					class="nav-link" href="/theatre/dashboard-movie"><i
-						class="fas fa-sign-in-alt"></i> Movie Dashboard</a></li>
-
-				<li class="nav-item" th:if="${session.customer}"><a
-					class="nav-link" href="/customer/previous-booking"><i
-						class="fas fa-sign-in-alt"></i> View Previous Booking</a></li>
-
-				<li class="nav-item" th:if="${session.customer}"><a
-					class="nav-link" href="/login"><i class="fas fa-sign-in-alt"></i>
-						Movies</a></li>
 
 				<li class="nav-item"
-					th:if="${session.admin!=null || session.customer!=null || session.theatre!=null}"><a
-					class="nav-link" href="/logout"><i class="fas fa-sign-in-alt"></i>
-						Logout</a></li>
-
+					th:if="${session.admin!=null || session.customer!=null || session.theatre!=null}">
+					<a class="nav-link" href="/logout"><i
+						class="fas fa-sign-out-alt"></i> Logout</a>
+				</li>
 			</ul>
 		</div>
 	</div>
