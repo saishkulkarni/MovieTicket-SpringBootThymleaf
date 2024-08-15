@@ -1,11 +1,14 @@
 package com.saish.movie_ticket.controller;
 
+import java.util.List;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -179,4 +182,35 @@ public class GeneralController {
 		return "redirect:/";
 	}
 
+	@GetMapping("/admin/approve-theatre")
+	public String approveTheatre(HttpSession session, ModelMap map) {
+		if (session.getAttribute("admin") != null) {
+			List<Theatre> list = theatreRepository.findByApprovedFalseAndVerifiedTrue();
+			if (list.isEmpty()) {
+				session.setAttribute("failure", "No Theatres Pending With Approve Request");
+				return "redirect:/";
+			} else {
+				map.put("list", list);
+				return "theatre-approve.html";
+			}
+		} else {
+			session.setAttribute("failure", "Invalid Session, Login Again");
+			return "redirect:/login";
+		}
+	}
+
+	@GetMapping("/admin/approve-theatre/{id}")
+	public String approveTheatre(HttpSession session, ModelMap map, @PathVariable int id) {
+		if (session.getAttribute("admin") != null) {
+			Theatre theatre = theatreRepository.findById(id).orElseThrow();
+			theatre.setApproved(true);
+			theatreRepository.save(theatre);
+			session.setAttribute("success", "Account Approved Success");
+			return "redirect:/";
+
+		} else {
+			session.setAttribute("failure", "Invalid Session, Login Again");
+			return "redirect:/login";
+		}
+	}
 }

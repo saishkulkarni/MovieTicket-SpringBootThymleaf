@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <th:block th:insert="~{fragments/header.html}"></th:block>
+    <title>List of Theatres</title>
+    <link rel="stylesheet" href="/css/approve-theatre.css">
+</head>
+<body>
+<th:block th:insert="~{fragments/navbar.html}"></th:block>
+	<th:block th:insert="~{fragments/message.html}"></th:block>
+    <div class="container">
+        <h1>List of Theatres</h1>
+        <div class="card-container">
+            <div class="card" th:each="theatre:${list}">
+                <h2 class="theatre-name" th:text="${theatre.name}"></h2>
+                <p class="theatre-address"><strong>Address:</strong> <span th:text="${theatre.address}"></span></p>
+                <p class="theatre-licence"><strong>Licence:</strong> <span th:text="${theatre.licenceNumber}"></span></p>
+                <a th:href="'/admin/approve-theatre/'+${theatre.id}" class="approve-btn">Approve</a>
+            </div>
+        </div>
+    </div>
+    <th:block th:insert=~{fragments/footer.html}></th:block>
+</body>
+</html>

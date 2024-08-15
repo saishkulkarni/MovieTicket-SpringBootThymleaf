@@ -21,9 +21,12 @@
 							class="fas fa-sign-in-alt"></i> Login</a></li>
 				</th:block>
 
+	
 				<li class="nav-item" th:if="${session.admin}"><a
 					class="nav-link" href="/admin/approve-theatre"><i
 						class="fas fa-check-circle"></i> Approve Theatre</a></li>
+						
+						
 				<th:block th:if="${session.customer}">
 					<li class="nav-item"><a class="nav-link" href="/login"><i
 							class="fas fa-film"></i> Movies</a></li>
@@ -31,6 +34,7 @@
 						href="/customer/previous-booking"><i class="fas fa-history"></i>
 							Previous Bookings</a></li>
 				</th:block>
+				
 				<th:block th:if="${session.theatre}">
 					<li class="nav-item"><a class="nav-link"
 						href="/theatre/add-movie"><i class="fas fa-plus-circle"></i>
