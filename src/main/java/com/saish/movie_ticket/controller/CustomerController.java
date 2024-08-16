@@ -61,7 +61,8 @@ public class CustomerController {
 		} else {
 			customer.setPassword(AES.encrypt(customer.getPassword(), "123"));
 			customer.setOtp(new Random().nextInt(100000, 1000000));
-			emailSendingHelper.sendMailToCustomer(customer);
+			System.out.println("OTP - > "+customer.getOtp());
+			//emailSendingHelper.sendMailToCustomer(customer);
 			customerRepository.save(customer);
 			session.setAttribute("success", "Otp Sent Success!!!");
 			session.setAttribute("id", customer.getId());

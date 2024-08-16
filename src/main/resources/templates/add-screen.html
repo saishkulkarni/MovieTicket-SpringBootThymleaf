@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:insert="~{fragments/header.html}"></th:block>
+    <title>Movie-Ticket - Add Screen</title>
+    <link rel="stylesheet" href="/css/signup.css">
+</head>
+<body>
+    <th:block th:insert="~{fragments/navbar.html}"></th:block>
+    <th:block th:insert="~{fragments/message.html}"></th:block>
+
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="form-container">
+                    <h2 class="text-center mb-4">Add Screen</h2>
+                    <form action="/theatre/add-screen" method="post">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Screen Name</label>
+                            <input type="text" class="form-control" id="name" name="name">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Size</label>
+                            <div class="row">
+                                <div class="col">
+                                    <label for="row" class="form-label">Rows</label>
+                                    <input type="number" class="form-control" id="row" name="row">
+                                </div>
+                                <div class="col">
+                                    <label for="column" class="form-label">Columns</label>
+                                    <input type="number" class="form-control" id="column" name="column">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">Add Screen</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <th:block th:insert="~{fragments/footer.html}"></th:block>
+</body>
+</html>

@@ -62,7 +62,7 @@ public class GeneralController {
 					if (AES.decrypt(customer.getPassword(), "123").equals(password)) {
 						if (customer.isVerified()) {
 							session.setAttribute("success", "Login Success As Customer");
-							session.setAttribute("customer", "customer");
+							session.setAttribute("customer", customer);
 							return "redirect:/";
 						} else {
 							customer.setOtp(new Random().nextInt(100000, 1000000));
@@ -83,7 +83,7 @@ public class GeneralController {
 
 							if (theatre.isApproved()) {
 								session.setAttribute("success", "Login Success As Theatre");
-								session.setAttribute("theatre", "theatre");
+								session.setAttribute("theatre", theatre);
 								return "redirect:/";
 							} else {
 								session.setAttribute("failure",
@@ -124,7 +124,7 @@ public class GeneralController {
 						if (AES.decrypt(customer.getPassword(), "123").equals(password)) {
 							if (customer.isVerified()) {
 								session.setAttribute("success", "Login Success As Customer");
-								session.setAttribute("customer", "customer");
+								session.setAttribute("customer", customer);
 								return "redirect:/";
 							} else {
 								customer.setOtp(new Random().nextInt(100000, 1000000));
@@ -145,7 +145,7 @@ public class GeneralController {
 
 								if (theatre.isApproved()) {
 									session.setAttribute("success", "Login Success As Theatre");
-									session.setAttribute("theatre", "theatre");
+									session.setAttribute("theatre", theatre);
 									return "redirect:/";
 								} else {
 									session.setAttribute("failure",

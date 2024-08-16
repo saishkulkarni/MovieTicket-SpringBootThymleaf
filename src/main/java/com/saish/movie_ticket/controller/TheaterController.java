@@ -1,5 +1,7 @@
 package com.saish.movie_ticket.controller;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,10 +13,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.saish.movie_ticket.dto.Screen;
+import com.saish.movie_ticket.dto.Seat;
 import com.saish.movie_ticket.dto.Theatre;
 import com.saish.movie_ticket.helper.AES;
 import com.saish.movie_ticket.helper.EmailSendingHelper;
 import com.saish.movie_ticket.repository.CustomerRepository;
+import com.saish.movie_ticket.repository.ScreenRepository;
 import com.saish.movie_ticket.repository.TheatreRepository;
 
 import jakarta.servlet.http.HttpSession;
@@ -35,6 +40,9 @@ public class TheaterController {
 
 	@Autowired
 	EmailSendingHelper emailSendingHelper;
+	
+	@Autowired
+	ScreenRepository screenRepository;
 
 	@GetMapping("/signup")
 	public String loadSignup(ModelMap map) {
@@ -61,7 +69,8 @@ public class TheaterController {
 		} else {
 			theatre.setPassword(AES.encrypt(theatre.getPassword(), "123"));
 			theatre.setOtp(new Random().nextInt(100000, 1000000));
-			emailSendingHelper.sendMailToTheatre(theatre);
+			System.out.println("OTP - > " + theatre.getOtp());
+			// emailSendingHelper.sendMailToTheatre(theatre);
 			theatreRepository.save(theatre);
 			session.setAttribute("success", "Otp Sent Success!!!");
 			session.setAttribute("id", theatre.getId());
@@ -86,6 +95,49 @@ public class TheaterController {
 		} else {
 			session.setAttribute("failure", "Invalid OTP! Try Again");
 			return "redirect:/theatre/enter-otp";
+		}
+	}
+
+	@GetMapping("/add-screen")
+	public String addScreen(HttpSession session) {
+		if (session.getAttribute("theatre") != null) {
+			return "add-screen.html";
+		} else {
+			session.setAttribute("failure", "Invalid Session, Login Again");
+			return "redirect:/login";
+		}
+	}
+
+	@PostMapping("/add-screen")
+	public String addScreen(Screen screen, HttpSession session) {
+		Theatre theatre = (Theatre) session.getAttribute("theatre");
+		if (theatre != null) {
+			if(screenRepository.existsByName(screen.getName())) {
+				session.setAttribute("failure", "Screen Already Exists");
+				return "redirect:/";
+			}
+			else {
+			//Creating All Seats
+			List<Seat> seats = new ArrayList<>();
+			for (char i = 'A'; i < 'A' + screen.getRow(); i++) {
+				for (int j = 1; j <= screen.getColumn(); j++) {
+					Seat seat = new Seat();
+					seat.setSeatNumber(i + "" + j);
+					seats.add(seat);
+				}
+			}
+			screen.setSeats(seats);
+			
+			List<Screen> screens=theatre.getScreens();
+			screens.add(screen);
+			
+			theatreRepository.save(theatre);
+			session.setAttribute("success", "Screen and Seats Added Success");
+			return "redirect:/";
+			}
+		} else {
+			session.setAttribute("failure", "Invalid Session, Login Again");
+			return "redirect:/login";
 		}
 	}
 
