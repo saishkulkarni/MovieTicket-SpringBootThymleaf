@@ -1,5 +1,6 @@
 package com.saish.movie_ticket.controller;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Random;
 
@@ -11,12 +12,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.saish.movie_ticket.dto.Customer;
+import com.saish.movie_ticket.dto.Movie;
 import com.saish.movie_ticket.dto.Theatre;
 import com.saish.movie_ticket.helper.AES;
+import com.saish.movie_ticket.helper.CloudinaryHelper;
 import com.saish.movie_ticket.helper.EmailSendingHelper;
 import com.saish.movie_ticket.repository.CustomerRepository;
+import com.saish.movie_ticket.repository.MovieRepository;
 import com.saish.movie_ticket.repository.TheatreRepository;
 
 import jakarta.servlet.http.HttpSession;
@@ -29,6 +34,12 @@ public class GeneralController {
 
 	@Autowired
 	TheatreRepository theatreRepository;
+
+	@Autowired
+	CloudinaryHelper cloudinaryHelper;
+
+	@Autowired
+	MovieRepository movieRepository;
 
 	@Autowired
 	EmailSendingHelper emailSendingHelper;
@@ -213,4 +224,29 @@ public class GeneralController {
 			return "redirect:/login";
 		}
 	}
+
+	@GetMapping("/admin/add-movie")
+	public String addMovie(HttpSession session, ModelMap map) {
+		if (session.getAttribute("admin") != null) {
+			return "add-movie.html";
+		} else {
+			session.setAttribute("failure", "Invalid Session, Login Again");
+			return "redirect:/login";
+		}
+	}
+
+	@PostMapping("/admin/add-movie")
+	public String addMovie(HttpSession session, ModelMap map, Movie movie, @RequestParam MultipartFile image)
+			throws IOException {
+		if (session.getAttribute("admin") != null) {
+			movie.setMovie_poster(cloudinaryHelper.saveMoviePosterToCloud(image));
+			movieRepository.save(movie);
+			session.setAttribute("success", "Movie Added Success");
+			return "redirect:/";
+		} else {
+			session.setAttribute("failure", "Invalid Session, Login Again");
+			return "redirect:/login";
+		}
+	}
+
 }

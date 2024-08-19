@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:insert="~{fragments/header.html}"></th:block>
+    <title>Add Movie - Movie Ticket Booking</title>
+    <link rel="stylesheet" href="/css/home.css">
+    <style>
+        .form-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .form-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            font-weight: bold;
+        }
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+        }
+        .btn-submit {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .btn-submit:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <th:block th:insert="~{fragments/navbar.html}"></th:block>
+    <th:block th:insert="~{fragments/message.html}"></th:block>
+
+    <div class="container mt-5">
+        <div class="form-container">
+            <h2>Add New Movie</h2>
+            <form action="/admin/add-movie" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="name">Movie Name</label>
+                    <input type="text" class="form-control" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="genre">Genre</label>
+                    <input type="text" class="form-control" id="genre" name="genre" required>
+                </div>
+                <div class="form-group">
+                    <label for="cast">Cast</label>
+                    <input type="text" class="form-control" id="cast" name="cast" required>
+                </div>
+                <div class="form-group">
+                    <label for="duration">Duration (minutes)</label>
+                    <input type="number" class="form-control" id="duration" name="duration" min="1" required>
+                </div>
+                <div class="form-group">
+                    <label for="image">Movie Poster</label>
+                    <input type="file" class="form-control" id="image" name="image" accept="image/*" required>
+                </div>
+                <div class="form-group">
+                    <label for="trailerLink">Trailer Link</label>
+                    <input type="url" class="form-control" id="trailerLink" name="trailerLink" required>
+                </div>
+                <div class="form-group">
+                    <label for="releaseDate">Release Date</label>
+                    <input type="date" class="form-control" id="releaseDate" name="releaseDate" required>
+                </div>
+                <button type="submit" class="btn-submit">Add Movie</button>
+            </form>
+        </div>
+    </div>
+
+    <th:block th:insert="~{fragments/footer.html}"></th:block>
+</body>
+</html>

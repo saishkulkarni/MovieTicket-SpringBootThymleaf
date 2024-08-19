@@ -25,6 +25,9 @@
 					<li class="nav-item"><a class="nav-link"
 						href="/admin/approve-theatre"><i class="fas fa-check-circle"></i>
 							Approve Theatre</a></li>
+							<li class="nav-item"><a class="nav-link"
+								href="/admin/add-movie"><i class="fas fa-plus-circle"></i>
+									Add Movie</a></li>
 				</th:block>
 
 				<th:block th:if="${session.customer}">
@@ -36,9 +39,6 @@
 				</th:block>
 
 				<th:block th:if="${session.theatre}">
-					<li class="nav-item"><a class="nav-link"
-						href="/theatre/add-movie"><i class="fas fa-plus-circle"></i>
-							Add Movie</a></li>\
 							<li class="nav-item"><a class="nav-link"
 						href="/theatre/add-screen"><i class="fas fa-plus-circle"></i>
 							Add Screen</a></li>
