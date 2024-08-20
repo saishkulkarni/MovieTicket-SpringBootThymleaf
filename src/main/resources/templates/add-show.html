@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Add Show</title>
+</head>
+<body>
+	<form action="/theatre/add-show" method="post">
+		Select a Screen: <select name="screen.id">
+			<option disabled="disabled" selected="selected">Select a
+				Screen</option>
+			<option th:each="screen:${screens}" th:value="${screen.id}"
+				th:text="${screen.name}"></option>
+		</select> <br> Select a Movie: <select name="movie.id">
+			<option disabled="disabled" selected="selected">Select a
+				Movie</option>
+			<option th:each="movie:${movies}" th:value="${movie.id}"
+				th:text="${movie.name}"></option>
+		</select> <br> Select Timing: <select name="timing">
+			<option disabled="disabled" selected="selected">Select Time</option>
+			<option value="1">10AM</option>
+			<option value="2">1PM</option>
+			<option value="3">4PM</option>
+			<option value="4">7PM</option>
+			<option value="5">10PM</option>
+		</select> <br> Ticket Price (in Rs.): <input type="number"
+			name="ticketPrice"> <br>
+		<button>Add</button>
+	</form>
+</body>
+</html>

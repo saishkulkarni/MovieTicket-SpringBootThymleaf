@@ -13,13 +13,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.saish.movie_ticket.dto.Movie;
 import com.saish.movie_ticket.dto.Screen;
 import com.saish.movie_ticket.dto.Seat;
+import com.saish.movie_ticket.dto.Show;
 import com.saish.movie_ticket.dto.Theatre;
 import com.saish.movie_ticket.helper.AES;
 import com.saish.movie_ticket.helper.EmailSendingHelper;
 import com.saish.movie_ticket.repository.CustomerRepository;
+import com.saish.movie_ticket.repository.MovieRepository;
 import com.saish.movie_ticket.repository.ScreenRepository;
+import com.saish.movie_ticket.repository.ShowRepository;
 import com.saish.movie_ticket.repository.TheatreRepository;
 
 import jakarta.servlet.http.HttpSession;
@@ -39,8 +43,14 @@ public class TheaterController {
 	TheatreRepository theatreRepository;
 
 	@Autowired
+	MovieRepository movieRepository;
+
+	@Autowired
 	EmailSendingHelper emailSendingHelper;
-	
+
+	@Autowired
+	ShowRepository showRepository;
+
 	@Autowired
 	ScreenRepository screenRepository;
 
@@ -112,29 +122,74 @@ public class TheaterController {
 	public String addScreen(Screen screen, HttpSession session) {
 		Theatre theatre = (Theatre) session.getAttribute("theatre");
 		if (theatre != null) {
-			if(screenRepository.existsByName(screen.getName())) {
+			if (screenRepository.existsByName(screen.getName())) {
 				session.setAttribute("failure", "Screen Already Exists");
 				return "redirect:/";
-			}
-			else {
-			//Creating All Seats
-			List<Seat> seats = new ArrayList<>();
-			for (char i = 'A'; i < 'A' + screen.getRow(); i++) {
-				for (int j = 1; j <= screen.getColumn(); j++) {
-					Seat seat = new Seat();
-					seat.setSeatNumber(i + "" + j);
-					seats.add(seat);
+			} else {
+				// Creating All Seats
+				List<Seat> seats = new ArrayList<>();
+				for (char i = 'A'; i < 'A' + screen.getRow(); i++) {
+					for (int j = 1; j <= screen.getColumn(); j++) {
+						Seat seat = new Seat();
+						seat.setSeatNumber(i + "" + j);
+						seats.add(seat);
+					}
 				}
+				screen.setSeats(seats);
+
+				List<Screen> screens = theatre.getScreens();
+				screens.add(screen);
+
+				theatreRepository.save(theatre);
+
+				session.setAttribute("theatre", theatreRepository.findById(theatre.getId()).orElseThrow());
+
+				session.setAttribute("success", "Screen and Seats Added Success");
+				return "redirect:/";
 			}
-			screen.setSeats(seats);
+		} else {
+			session.setAttribute("failure", "Invalid Session, Login Again");
+			return "redirect:/login";
+		}
+	}
+
+	@GetMapping("/add-show")
+	public String addShow(HttpSession session, ModelMap map) {
+		Theatre theatre = (Theatre) session.getAttribute("theatre");
+		if (theatre != null) {
+			List<Screen> screens = theatre.getScreens();
+			List<Movie> movies = movieRepository.findAll();
+
+			if (screens.isEmpty()) {
+				session.setAttribute("failure", "No Screens Available for Adding Show");
+				return "redirect:/";
+			}
+			if (movies.isEmpty()) {
+				session.setAttribute("failure", "No Movies Available for Adding Show");
+				return "redirect:/";
+			}
+
+			map.put("screens", screens);
+			map.put("movies", movies);
+			return "add-show.html";
+
+		} else {
+			session.setAttribute("failure", "Invalid Session, Login Again");
+			return "redirect:/login";
+		}
+	}
+
+	@PostMapping("/add-show")
+	public String addShow(HttpSession session, ModelMap map, Show show) {
+		Theatre theatre = (Theatre) session.getAttribute("theatre");
+		if (theatre != null) {
+			show.setMovie(movieRepository.findById(show.getMovie().getId()).orElseThrow());
+			show.setScreen(screenRepository.findById(show.getScreen().getId()).orElseThrow());
 			
-			List<Screen> screens=theatre.getScreens();
-			screens.add(screen);
+			showRepository.save(show);
 			
-			theatreRepository.save(theatre);
-			session.setAttribute("success", "Screen and Seats Added Success");
+			session.setAttribute("success", "Show Added Success");
 			return "redirect:/";
-			}
 		} else {
 			session.setAttribute("failure", "Invalid Session, Login Again");
 			return "redirect:/login";
