@@ -21,13 +21,13 @@
 		<h2 class="text-center mb-4">Featured Movies</h2>
 
 		<div id="movieCarousel" class="carousel slide" data-bs-ride="carousel">
-			<div class="carousel-inner">
+			<div class="carousel-inner" th:each="movie:${movies}">
 				<div class="carousel-item active">
-					<img src="/images/m3.jpg"
+					<img th:src="${movie.movie_poster}"
 						class="d-block w-100" alt="Movie 1">
 					<div class="carousel-caption d-none d-md-block">
-						<h5 class="movie-title">Joker</h5>
-						<p>Arthur Fleck, a party clown and a failed stand-up comedian, leads an impoverished life with his ailing mother</p>
+						<h5 class="movie-title" th:text="${movie.name}"></h5>
+						<p th:text="${movie.description}"></p>
 					</div>
 				</div>
 			</div>

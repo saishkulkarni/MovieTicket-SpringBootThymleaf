@@ -185,11 +185,30 @@ public class TheaterController {
 		if (theatre != null) {
 			show.setMovie(movieRepository.findById(show.getMovie().getId()).orElseThrow());
 			show.setScreen(screenRepository.findById(show.getScreen().getId()).orElseThrow());
-			
+
 			showRepository.save(show);
-			
+
 			session.setAttribute("success", "Show Added Success");
 			return "redirect:/";
+		} else {
+			session.setAttribute("failure", "Invalid Session, Login Again");
+			return "redirect:/login";
+		}
+	}
+
+	@GetMapping("/manage-show")
+	public String getShows(HttpSession session, ModelMap map) {
+		Theatre theatre = (Theatre) session.getAttribute("theatre");
+		if (theatre != null) {
+			List<Screen> screens = theatre.getScreens();
+			List<Show> shows = showRepository.findByScreenIn(screens);
+			if (shows.isEmpty()) {
+				session.setAttribute("failure", "No Shows Added Yet");
+				return "redirect:/";
+			} else {
+				map.put("shows", shows);
+				return "manage-show.html";
+			}
 		} else {
 			session.setAttribute("failure", "Invalid Session, Login Again");
 			return "redirect:/login";
