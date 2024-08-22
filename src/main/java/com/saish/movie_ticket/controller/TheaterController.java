@@ -1,5 +1,6 @@
 package com.saish.movie_ticket.controller;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -209,6 +211,34 @@ public class TheaterController {
 				map.put("shows", shows);
 				return "manage-show.html";
 			}
+		} else {
+			session.setAttribute("failure", "Invalid Session, Login Again");
+			return "redirect:/login";
+		}
+	}
+
+	@GetMapping("/open-booking/{id}")
+	public String openBooking(HttpSession session, @PathVariable int id) {
+		Theatre theatre = (Theatre) session.getAttribute("theatre");
+		if (theatre != null) {
+
+			Show show = showRepository.findById(id).orElseThrow();
+
+			Screen screen = show.getScreen();
+			int timing = show.getTiming();
+			LocalDate movieDate = show.getMovie().getReleaseDate();
+			List<Movie> movies = movieRepository.findByReleaseDate(movieDate);
+			boolean flag = showRepository.existsByScreenAndTimingAndAvailableTrueAndMovieIn(screen, timing, movies);
+			if (flag) {
+				session.setAttribute("failure", "Already there is a show running, can not open different booking");
+				return "redirect:/";
+			} else {
+				show.setAvailable(true);
+				showRepository.save(show);
+				session.setAttribute("success", "Bookings Open ");
+				return "redirect:/theatre/manage-show";
+			}
+
 		} else {
 			session.setAttribute("failure", "Invalid Session, Login Again");
 			return "redirect:/login";

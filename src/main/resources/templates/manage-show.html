@@ -31,7 +31,7 @@
 			<td th:text="${show.ticketPrice}+'&#8377'"></td>
 			<td th:text="${show.movie.releaseDate}"></td>
 			<td>
-			<a th:if="${!show.available}"><button>Open</button></a>
+			<a th:href="'/theatre/open-booking/'+${show.id}" th:if="${!show.available}"><button>Open</button></a>
 			<a th:if="${show.available}"><button>Close</button></a>
 			</td>
 		</tr>
