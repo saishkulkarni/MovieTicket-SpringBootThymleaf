@@ -231,13 +231,39 @@ public class TheaterController {
 			boolean flag = showRepository.existsByScreenAndTimingAndAvailableTrueAndMovieIn(screen, timing, movies);
 			if (flag) {
 				session.setAttribute("failure", "Already there is a show running, can not open different booking");
-				return "redirect:/";
+				return "redirect:/theatre/manage-show";
 			} else {
 				show.setAvailable(true);
 				showRepository.save(show);
 				session.setAttribute("success", "Bookings Open ");
 				return "redirect:/theatre/manage-show";
 			}
+
+		} else {
+			session.setAttribute("failure", "Invalid Session, Login Again");
+			return "redirect:/login";
+		}
+	}
+
+	@GetMapping("/close-booking/{id}")
+	public String closeBooking(HttpSession session, @PathVariable int id) {
+		Theatre theatre = (Theatre) session.getAttribute("theatre");
+		if (theatre != null) {
+			Show show = showRepository.findById(id).orElseThrow();
+			Screen screen = show.getScreen();
+			List<Seat> seats = screen.getSeats();
+
+			for (Seat seat : seats) {
+				if (seat.isOccupied()) {
+					session.setAttribute("failure", "Already Tickets Are Booked, Can not Cancel");
+					return "redirect:/theatre/manage-show";
+				}
+			}
+
+			show.setAvailable(false);
+			showRepository.save(show);
+			session.setAttribute("success", "Bookings Closed");
+			return "redirect:/theatre/manage-show";
 
 		} else {
 			session.setAttribute("failure", "Invalid Session, Login Again");
