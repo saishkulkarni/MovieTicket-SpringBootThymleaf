@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -61,13 +62,24 @@ public class CustomerController {
 		} else {
 			customer.setPassword(AES.encrypt(customer.getPassword(), "123"));
 			customer.setOtp(new Random().nextInt(100000, 1000000));
-			System.out.println("OTP - > "+customer.getOtp());
-			//emailSendingHelper.sendMailToCustomer(customer);
+			System.out.println("OTP - > " + customer.getOtp());
+			emailSendingHelper.sendMailToCustomer(customer);
 			customerRepository.save(customer);
 			session.setAttribute("success", "Otp Sent Success!!!");
 			session.setAttribute("id", customer.getId());
 			return "redirect:/customer/enter-otp";
 		}
+	}
+
+	@GetMapping("/resend-otp/{id}")
+	public String resendOtp(@PathVariable int id, HttpSession session) {
+		Customer customer = customerRepository.findById(id).get();
+		customer.setOtp(new Random().nextInt(100000, 1000000));
+		emailSendingHelper.sendMailToCustomer(customer);
+		customerRepository.save(customer);
+		session.setAttribute("success", "Otp Resent Success!!!");
+		session.setAttribute("id", customer.getId());
+		return "redirect:/customer/enter-otp";
 	}
 
 	@GetMapping("/enter-otp")

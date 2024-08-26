@@ -50,8 +50,9 @@ public class GeneralController {
 	private String adminPassword;
 
 	@GetMapping("/")
-	public String loadMain() {
-		return "home.html";
+	public String loadMain(ModelMap map) {
+		map.put("movies", movieRepository.findAll());
+		return "home.html";	
 	}
 
 	@GetMapping("/login")
