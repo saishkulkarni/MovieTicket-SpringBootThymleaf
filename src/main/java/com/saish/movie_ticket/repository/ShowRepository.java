@@ -1,6 +1,11 @@
 package com.saish.movie_ticket.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.saish.movie_ticket.dto.Movie;
+import com.saish.movie_ticket.dto.Screen;
 import java.util.List;
 import com.saish.movie_ticket.dto.Movie;
 import com.saish.movie_ticket.dto.Screen;
