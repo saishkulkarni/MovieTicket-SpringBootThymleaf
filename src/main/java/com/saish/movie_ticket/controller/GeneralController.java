@@ -16,12 +16,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.saish.movie_ticket.dto.Customer;
 import com.saish.movie_ticket.dto.Movie;
+import com.saish.movie_ticket.dto.Show;
 import com.saish.movie_ticket.dto.Theatre;
 import com.saish.movie_ticket.helper.AES;
 import com.saish.movie_ticket.helper.CloudinaryHelper;
 import com.saish.movie_ticket.helper.EmailSendingHelper;
 import com.saish.movie_ticket.repository.CustomerRepository;
 import com.saish.movie_ticket.repository.MovieRepository;
+import com.saish.movie_ticket.repository.ShowRepository;
 import com.saish.movie_ticket.repository.TheatreRepository;
 
 import jakarta.servlet.http.HttpSession;
@@ -39,6 +41,9 @@ public class GeneralController {
 	CloudinaryHelper cloudinaryHelper;
 
 	@Autowired
+	ShowRepository showRepository;
+
+	@Autowired
 	MovieRepository movieRepository;
 
 	@Autowired
@@ -52,7 +57,7 @@ public class GeneralController {
 	@GetMapping("/")
 	public String loadMain(ModelMap map) {
 		map.put("movies", movieRepository.findAll());
-		return "home.html";	
+		return "home.html";
 	}
 
 	@GetMapping("/login")
@@ -247,6 +252,32 @@ public class GeneralController {
 		} else {
 			session.setAttribute("failure", "Invalid Session, Login Again");
 			return "redirect:/login";
+		}
+	}
+
+	@GetMapping("/movies")
+	public String loadAllMovies(ModelMap map, HttpSession session) {
+		List<Movie> movies = movieRepository.findAll();
+		if (movies.isEmpty()) {
+			session.setAttribute("failure", "No Movies Are Running");
+			return "redirect:/";
+		} else {
+			map.put("movies", movies);
+			return "view-movies.html";
+		}
+	}
+
+	@GetMapping("/shows/{id}")
+	public String loadAllShows(ModelMap map, HttpSession session, @PathVariable int id) {
+		Movie movie = movieRepository.findById(id).orElseThrow();
+		List<Show> shows = showRepository.findByMovieAndAvailableTrue(movie);
+
+		if (shows.isEmpty()) {
+			session.setAttribute("failure", "There are No Shows Running");
+			return "redirect:/";
+		} else {
+			map.put("shows", shows);
+			return "view-shows.html";
 		}
 	}
 

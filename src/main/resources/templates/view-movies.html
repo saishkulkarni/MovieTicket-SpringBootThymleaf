@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>List of Theatres - BookMyMovie</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --primary-color: #032541;
+        --secondary-color: #01b4e4;
+        --background-color: #f8f9fa;
+        --text-color: #333;
+      }
+
+      body {
+        font-family: "Arial", sans-serif;
+        background-color: var(--background-color);
+        color: var(--text-color);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* Navbar styles */
+      .navbar {
+        background-color: var(--primary-color);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .navbar-brand {
+        font-weight: bold;
+        font-size: 1.5rem;
+        color: var(--secondary-color) !important;
+      }
+
+      .nav-link {
+        font-weight: 500;
+        color: #fff !important;
+        transition: color 0.3s ease;
+      }
+
+      .nav-link:hover {
+        color: var(--secondary-color) !important;
+      }
+
+      /* Main content styles */
+      main {
+        flex: 1 0 auto;
+      }
+
+      .hero-section {
+        background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+          url("/images/background-1.jpg");
+        background-size: cover;
+        background-position: center;
+        color: white;
+        padding: 150px 0;
+        text-align: center;
+      }
+
+      .hero-title {
+        font-size: 3.5rem;
+        font-weight: bold;
+        margin-bottom: 1.5rem;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+      }
+
+      .hero-subtitle {
+        font-size: 1.5rem;
+        margin-bottom: 2.5rem;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+      }
+
+      .btn-primary {
+        background-color: var(--secondary-color);
+        border-color: var(--secondary-color);
+        padding: 15px 30px;
+        font-size: 1.2rem;
+        font-weight: bold;
+        transition: all 0.3s ease;
+      }
+
+      .btn-primary:hover {
+        background-color: #0099c9;
+        border-color: #0099c9;
+        transform: translateY(-3px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+
+      .featured-movies {
+        padding: 80px 0;
+        background-color: #fff;
+      }
+
+      .featured-movies h2 {
+        font-size: 2.5rem;
+        font-weight: bold;
+        margin-bottom: 2rem;
+        color: var(--primary-color);
+      }
+
+      .carousel-item img {
+        height: 600px;
+        width: 100%;
+        object-fit: cover;
+      }
+
+      .carousel-caption {
+        background-color: rgba(0, 0, 0, 0.7);
+        padding: 30px;
+        border-radius: 10px;
+        bottom: 50px;
+      }
+
+      .movie-title {
+        font-size: 2rem;
+        font-weight: bold;
+        margin-bottom: 1rem;
+      }
+
+      /* Footer styles */
+      .footer {
+        background-color: var(--primary-color);
+        color: white;
+        padding: 30px 0;
+        margin-top: auto;
+      }
+
+      .footer h5 {
+        color: var(--secondary-color);
+        font-weight: bold;
+        font-size: 1.2rem;
+        margin-bottom: 1rem;
+      }
+
+      .footer p {
+        margin-bottom: 0.5rem;
+        font-size: 1rem;
+      }
+
+      /* Responsive styles */
+      @media (max-width: 768px) {
+        .hero-title {
+          font-size: 2.5rem;
+        }
+
+        .hero-subtitle {
+          font-size: 1.2rem;
+        }
+
+        .carousel-item img {
+          height: 400px;
+        }
+
+        .movie-title {
+          font-size: 1.5rem;
+        }
+      }
+
+      @media (max-width: 576px) {
+        .hero-section {
+          padding: 100px 0;
+        }
+
+        .hero-title {
+          font-size: 2rem;
+        }
+
+        .carousel-item img {
+          height: 300px;
+        }
+
+        .movie-title {
+          font-size: 1.2rem;
+        }
+      }
+
+      /* Alert styles */
+      .alert-container {
+        position: fixed;
+        top: 70px;
+        left: 20px;
+        z-index: 1000;
+        width: 80%;
+        max-width: 500px;
+      }
+
+      /* Additional styles for theatre-approve page */
+      .container {
+        padding: 50px 0;
+      }
+
+      h1 {
+        color: var(--primary-color);
+        margin-bottom: 30px;
+      }
+
+      .card {
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        margin-bottom: 20px;
+      }
+
+      .theatre-name {
+        color: var(--primary-color);
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+      }
+
+      .approve-btn {
+        background-color: var(--secondary-color);
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin-top: 10px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      .approve-btn:hover {
+        background-color: #0099c9;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+      <div class="container">
+        <a class="navbar-brand" href="/"
+          ><i class="fas fa-film"></i> BookMyMovie</a
+        >
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="/"><i class="fas fa-home"></i> Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/customer/signup"
+                ><i class="fas fa-user-plus"></i> Register</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/login"
+                ><i class="fas fa-sign-in-alt"></i> Login</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <main>
+      <div class="container">
+        <h1 class="text-center">List of Movies</h1>
+        <div class="row">
+          <div class="col-md-4 mb-4" th:each="movie:${movies}">
+            <div class="card">
+              <h2 class="theatre-name" th:text="${movie.name}"></h2>
+              <img th:src="${movie.movie_poster}" alt="">
+              <p class="theatre-address">
+                <span th:text="${movie.description}"></span>
+              </p>
+              <p class="theatre-licence">
+                <strong>Cast:</strong>
+                <span th:text="${movie.cast}"></span>
+              </p>
+              <a
+                th:href="'/shows/'+${movie.id}"
+                class="btn btn-primary approve-btn"
+                >Select</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6 mb-3 mb-md-0">
+            <h5>BookMyMovie</h5>
+            <p>Your one-stop solution for movie ticket booking.</p>
+          </div>
+          <div class="col-md-6 text-md-end">
+            <h5>Contact Us</h5>
+            <p>Email: info@bookmymovie.com</p>
+            <p>Phone: 1-800-BOOK-NOW</p>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
