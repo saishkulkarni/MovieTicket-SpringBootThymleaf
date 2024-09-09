@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Seat Selection - BookMyMovie</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --primary-color: #032541;
+        --secondary-color: #01b4e4;
+        --background-color: #f8f9fa;
+        --text-color: #333;
+      }
+
+      body {
+        font-family: "Arial", sans-serif;
+        background-color: var(--background-color);
+        color: var(--text-color);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .navbar {
+        background-color: var(--primary-color);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .navbar-brand {
+        font-weight: bold;
+        font-size: 1.5rem;
+        color: var(--secondary-color) !important;
+      }
+
+      .nav-link {
+        font-weight: 500;
+        color: #fff !important;
+        transition: color 0.3s ease;
+      }
+
+      .nav-link:hover {
+        color: var(--secondary-color) !important;
+      }
+
+      main {
+        flex: 1 0 auto;
+        padding: 2rem 0;
+      }
+      .seat-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        margin-top: 2rem;
+      }
+
+      .seat-row {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 10px;
+      }
+
+      .seat {
+        width: 30px;
+        height: 30px;
+        border: 1px solid var(--primary-color);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        margin: 0 5px;
+      }
+
+      .seat:hover {
+        background-color: var(--secondary-color);
+        color: white;
+      }
+
+      .seat.occupied {
+        background-color: #ccc;
+        cursor: not-allowed;
+      }
+
+      .screen {
+        background-color: #fff;
+        height: 70px;
+        width: 50%;
+        margin: 15px 0;
+        transform: rotateX(-45deg);
+        box-shadow: 0 3px 10px rgba(255, 255, 255, 0.7);
+        text-align: center;
+        line-height: 70px;
+        color: #032541;
+        font-weight: bold;
+      }
+
+      .container {
+        perspective: 1000px;
+        margin-bottom: 30px;
+      }
+      .seat.selected {
+        background-color: var(--secondary-color);
+        color: white;
+      }
+      .screen {
+        background-color: #fff;
+        height: 70px;
+        width: 100%;
+        margin: 15px 0;
+        transform: rotateX(-45deg);
+        box-shadow: 0 3px 10px rgba(255, 255, 255, 0.7);
+        text-align: center;
+        line-height: 70px;
+        color: #032541;
+        font-weight: bold;
+      }
+
+      .footer {
+        background-color: var(--primary-color);
+        color: white;
+        padding: 30px 0;
+        margin-top: auto;
+      }
+
+      .footer h5 {
+        color: var(--secondary-color);
+        font-weight: bold;
+        font-size: 1.2rem;
+        margin-bottom: 1rem;
+      }
+
+      .footer p {
+        margin-bottom: 0.5rem;
+        font-size: 1rem;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+      <div class="container">
+        <a class="navbar-brand" href="/"
+          ><i class="fas fa-film"></i> BookMyMovie</a
+        >
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="/"><i class="fas fa-home"></i> Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/customer/movies"
+                ><i class="fas fa-film"></i> Movies</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/customer/bookings"
+                ><i class="fas fa-ticket-alt"></i> My Bookings</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/logout"
+                ><i class="fas fa-sign-out-alt"></i> Logout</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <main class="container">
+      <h1 class="text-center mb-4">Seat Selection</h1>
+      <div class="row">
+        <div class="col-md-8 offset-md-2">
+          <div class="card">
+            <div class="card-body">
+              <h2 class="card-title" th:text="${show.movie.name}"></h2>
+              <p class="card-text">
+                <strong>Theatre:</strong>
+                <span th:text="${show.screen.theatre.name}"></span><br />
+                <strong>Screen:</strong>
+                <span th:text="${show.screen.name}"></span><br />
+                <strong>Time:</strong> <span th:text="${show.timing}"></span
+                ><br />
+                <strong>Price:</strong> $<span
+                  th:text="${show.ticketPrice}"
+                ></span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="screen">
+        <span>Screen this side</span>
+      </div>
+      <form th:action="@{/book-seats}" method="post">
+        <input type="hidden" name="showId" th:value="${show.id}" />
+        <div class="seat-container">
+          <div
+            th:each="row : ${#numbers.sequence(0, show.screen.row - 1)}"
+            class="seat-row"
+          >
+            <div
+              th:each="col : ${#numbers.sequence(1, show.screen.column)}"
+              class="seat"
+            >
+              <input
+                type="checkbox"
+                name="selectedSeats"
+                th:value="${'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.charAt(row) + '' + col}"
+                th:id="'seat-' + ${'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.charAt(row) + '' + col}"
+                class="seat-checkbox"
+                style="display: none"
+              />
+              <label
+                th:for="'seat-' + ${'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.charAt(row) + '' + col}"
+                class="seat-label"
+              >
+                <i class="fas fa-chair"></i>
+                <span
+                  th:text="${'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.charAt(row) + '' + col}"
+                  class="seat-name"
+                ></span>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="text-center mt-4">
+          <button type="submit" class="btn btn-primary" id="bookSeats">
+            Book Selected Seats
+          </button>
+        </div>
+      </form>
+    </main>
+    <footer class="footer">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6 mb-3 mb-md-0">
+            <h5>BookMyMovie</h5>
+            <p>Your one-stop solution for movie ticket booking.</p>
+          </div>
+          <div class="col-md-6 text-md-end">
+            <h5>Contact Us</h5>
+            <p>Email: info@bookmymovie.com</p>
+            <p>Phone: 1-800-BOOK-NOW</p>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const seatLabels = document.querySelectorAll(".seat-label");
+        const bookButton = document.getElementById("bookSeats");
+
+        seatLabels.forEach((label) => {
+          label.addEventListener("click", function (e) {
+            e.preventDefault(); // Prevent default checkbox behavior
+            const checkbox = this.previousElementSibling;
+            checkbox.checked = !checkbox.checked;
+            this.parentElement.classList.toggle("selected");
+          });
+        });
+
+        bookButton.addEventListener("click", function () {
+          const selectedSeats = document.querySelectorAll(
+            ".seat-checkbox:checked"
+          );
+          if (selectedSeats.length === 0) {
+            alert("Please select at least one seat.");
+            event.preventDefault();
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

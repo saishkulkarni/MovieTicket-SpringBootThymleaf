@@ -1,5 +1,6 @@
 package com.saish.movie_ticket.controller;
 
+import java.util.List;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +14,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.saish.movie_ticket.dto.Customer;
+import com.saish.movie_ticket.dto.Seat;
+import com.saish.movie_ticket.dto.Show;
 import com.saish.movie_ticket.helper.AES;
 import com.saish.movie_ticket.helper.EmailSendingHelper;
 import com.saish.movie_ticket.repository.CustomerRepository;
+import com.saish.movie_ticket.repository.ShowRepository;
 import com.saish.movie_ticket.repository.TheatreRepository;
 
 import jakarta.servlet.http.HttpSession;
@@ -36,6 +40,9 @@ public class CustomerController {
 
 	@Autowired
 	EmailSendingHelper emailSendingHelper;
+
+	@Autowired
+	ShowRepository showRepository;
 
 	@GetMapping("/signup")
 	public String loadSignup(ModelMap map) {
@@ -101,4 +108,14 @@ public class CustomerController {
 			return "redirect:/customer/enter-otp";
 		}
 	}
+
+	@GetMapping("/book-show/{showId}")
+	public String bookShow(@PathVariable int showId, ModelMap map) {
+		Show show = showRepository.findById(showId).orElseThrow();
+		List<Seat> seats = show.getScreen().getSeats();
+		map.put("show", show);
+		map.put("seats", seats);
+		return "seat-selection";
+	}
+
 }

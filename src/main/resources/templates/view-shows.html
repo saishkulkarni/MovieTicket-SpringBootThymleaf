@@ -159,31 +159,46 @@
         </div>
       </div>
     </nav>
-      <main>
-        <div class="container">
-          <h1 class="text-center">Available Shows</h1>
-          <div class="row">
-            <div class="col-md-4 mb-4" th:each="show : ${shows}">
-              <div class="card">
-                <h2 class="show-title" th:text="${show.movie.name}"></h2>
-                <p><strong>Time:</strong> 
-                  <span th:switch="${show.timing}">
-                    <span th:case="1">10:00 AM</span>
-                    <span th:case="2">1:00 PM</span>
-                    <span th:case="3">4:00 PM</span>
-                    <span th:case="4">7:00 PM</span>
-                    <span th:case="5">10:00 PM</span>
-                  </span>
-                </p>
-                <p><strong>Theatre:</strong> <span th:text="${show.screen.theatre.name}"></span></p>
-                <p><strong>Screen:</strong> <span th:text="${show.screen.name}"></span></p>
-                <p><strong>Price:</strong> $<span th:text="${show.ticketPrice}"></span></p>
-                <a th:href="@{'/book-show/' + ${show.id}}" class="btn btn-primary">Book Now</a>
-              </div>
+    <main>
+      <div class="container">
+        <h1 class="text-center">Available Shows</h1>
+        <div class="row">
+          <div class="col-md-4 mb-4" th:each="show : ${shows}">
+            <div class="card">
+              <h2 class="show-title" th:text="${show.movie.name}"></h2>
+              <p>
+                <strong>Time:</strong>
+                <span th:switch="${show.timing}">
+                  <span th:case="1">10:00 AM</span>
+                  <span th:case="2">1:00 PM</span>
+                  <span th:case="3">4:00 PM</span>
+                  <span th:case="4">7:00 PM</span>
+                  <span th:case="5">10:00 PM</span>
+                </span>
+              </p>
+              <p>
+                <strong>Theatre:</strong>
+                <span th:text="${show.screen.theatre.name}"></span>
+              </p>
+              <p>
+                <strong>Screen:</strong>
+                <span th:text="${show.screen.name}"></span>
+              </p>
+              <p>
+                <strong>Price:</strong> $<span
+                  th:text="${show.ticketPrice}"
+                ></span>
+              </p>
+              <a
+                th:href="'/customer/book-show/' + ${show.id}"
+                class="btn btn-primary"
+                >Book Now</a
+              >
             </div>
           </div>
         </div>
-      </main>
+      </div>
+    </main>
     <!-- Footer -->
     <footer class="footer">
       <div class="container">
