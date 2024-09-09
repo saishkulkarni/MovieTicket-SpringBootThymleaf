@@ -124,7 +124,15 @@ public class TheaterController {
 	public String addScreen(Screen screen, HttpSession session) {
 		Theatre theatre = (Theatre) session.getAttribute("theatre");
 		if (theatre != null) {
-			if (screenRepository.existsByName(screen.getName())) {
+			boolean flag = false;
+			List<Screen> screens = theatre.getScreens();
+			for (Screen screen1 : screens) {
+				if (screen.getName().equals(screen1.getName())) {
+					flag = true;
+					break;
+				}
+			}
+			if (flag) {
 				session.setAttribute("failure", "Screen Already Exists");
 				return "redirect:/";
 			} else {
@@ -139,9 +147,8 @@ public class TheaterController {
 				}
 				screen.setSeats(seats);
 
-				List<Screen> screens = theatre.getScreens();
 				screens.add(screen);
-
+				screen.setTheatre(theatre);
 				theatreRepository.save(theatre);
 
 				session.setAttribute("theatre", theatreRepository.findById(theatre.getId()).orElseThrow());

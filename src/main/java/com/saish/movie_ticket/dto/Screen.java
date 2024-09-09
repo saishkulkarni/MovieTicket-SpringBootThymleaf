@@ -9,6 +9,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Transient;
 import lombok.Data;
@@ -24,6 +25,9 @@ public class Screen {
 	private int row;
 	@Transient
 	private int column;
+
+	@ManyToOne
+	private Theatre theatre;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<Seat> seats = new ArrayList<>();
