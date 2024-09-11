@@ -1,6 +1,7 @@
 package com.saish.movie_ticket.controller;
 
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -234,18 +235,24 @@ public class TheaterController {
 			Screen screen = show.getScreen();
 			int timing = show.getTiming();
 			LocalDate movieDate = show.getMovie().getReleaseDate();
-			List<Movie> movies = movieRepository.findByReleaseDate(movieDate);
-			boolean flag = showRepository.existsByScreenAndTimingAndAvailableTrueAndMovieIn(screen, timing, movies);
-			if (flag) {
-				session.setAttribute("failure", "Already there is a show running, can not open different booking");
-				return "redirect:/theatre/manage-show";
+			LocalDate currentDate = LocalDate.now();
+			if (Period.between(movieDate, currentDate).getDays() >= 0 && Period.between(movieDate, currentDate)
+					.getDays() <= 10) {
+				List<Movie> movies = movieRepository.findByReleaseDate(movieDate);
+				boolean flag = showRepository.existsByScreenAndTimingAndAvailableTrueAndMovieIn(screen, timing, movies);
+				if (flag) {
+					session.setAttribute("failure", "Already there is a show running, can not open different booking");
+					return "redirect:/theatre/manage-show";
+				} else {
+					show.setAvailable(true);
+					showRepository.save(show);
+					session.setAttribute("success", "Bookings Open ");
+					return "redirect:/theatre/manage-show";
+				}
 			} else {
-				show.setAvailable(true);
-				showRepository.save(show);
-				session.setAttribute("success", "Bookings Open ");
+				session.setAttribute("failure", "Can not open Bookings Now");
 				return "redirect:/theatre/manage-show";
 			}
-
 		} else {
 			session.setAttribute("failure", "Invalid Session, Login Again");
 			return "redirect:/login";

@@ -211,7 +211,7 @@
       <div class="screen">
         <span>Screen this side</span>
       </div>
-      <form th:action="@{/book-seats}" method="post">
+      <form action="/customer/book-seats" method="post">
         <input type="hidden" name="showId" th:value="${show.id}" />
         <div class="seat-container">
           <div

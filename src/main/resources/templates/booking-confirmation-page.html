@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Available Shows - BookMyMovie</title>
+    <title>Booking Confirmation - BookMyMovie</title>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -13,7 +13,6 @@
       rel="stylesheet"
     />
     <style>
-      /* Include all the CSS from view-movies.html here */
       :root {
         --primary-color: #032541;
         --secondary-color: #01b4e4;
@@ -30,7 +29,6 @@
         flex-direction: column;
       }
 
-      /* Navbar styles */
       .navbar {
         background-color: var(--primary-color);
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -52,51 +50,11 @@
         color: var(--secondary-color) !important;
       }
 
-      /* Main content styles */
       main {
         flex: 1 0 auto;
+        padding: 2rem 0;
       }
 
-      .container {
-        padding: 50px 0;
-      }
-
-      h1 {
-        color: var(--primary-color);
-        margin-bottom: 30px;
-      }
-
-      .card {
-        background-color: #fff;
-        border-radius: 5px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        padding: 20px;
-        margin-bottom: 20px;
-      }
-
-      .show-title {
-        color: var(--primary-color);
-        font-size: 1.5rem;
-        margin-bottom: 10px;
-      }
-
-      .btn-primary {
-        background-color: var(--secondary-color);
-        border-color: var(--secondary-color);
-        padding: 10px 20px;
-        font-size: 1rem;
-        font-weight: bold;
-        transition: all 0.3s ease;
-      }
-
-      .btn-primary:hover {
-        background-color: #0099c9;
-        border-color: #0099c9;
-        transform: translateY(-3px);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-      }
-
-      /* Footer styles */
       .footer {
         background-color: var(--primary-color);
         color: white;
@@ -118,7 +76,6 @@
     </style>
   </head>
   <body>
-    <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark">
       <div class="container">
         <a class="navbar-brand" href="/"
@@ -141,13 +98,13 @@
               <a class="nav-link" href="/"><i class="fas fa-home"></i> Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/customer/movies"
+              <a class="nav-link" href="/movies"
                 ><i class="fas fa-film"></i> Movies</a
               >
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/customer/bookings"
-                ><i class="fas fa-ticket-alt"></i> My Bookings</a
+              <a class="nav-link" href="/customer/previous-booking"
+                ><i class="fas fa-history"></i> Previous Bookings</a
               >
             </li>
             <li class="nav-item">
@@ -159,51 +116,36 @@
         </div>
       </div>
     </nav>
-    <main>
-      <div class="container">
-        <h1 class="text-center">Available Shows</h1>
-        <div class="row">
-          <div class="col-md-4 mb-4" th:each="show : ${shows}">
-            <div class="card">
-              <h2 class="show-title" th:text="${show.movie.name}"></h2>
-              <p>
-                <strong>Time:</strong>
-                <span th:switch="${show.timing}">
-                  <span th:case="1">10:00 AM</span>
-                  <span th:case="2">1:00 PM</span>
-                  <span th:case="3">4:00 PM</span>
-                  <span th:case="4">7:00 PM</span>
-                  <span th:case="5">10:00 PM</span>
-                </span>
-              </p>
-              <p>
-                <strong>Date:</strong>
-                <span th:text="${show.movie.releaseDate}"></span>
-              </p>
-              <p>
+
+    <main class="container">
+      <h1 class="text-center mb-4">Booking Confirmation</h1>
+      <div class="row">
+        <div class="col-md-8 offset-md-2">
+          <div class="card">
+            <div class="card-body">
+              <h2 class="card-title" th:text="${show.movie.name}"></h2>
+              <p class="card-text">
                 <strong>Theatre:</strong>
-                <span th:text="${show.screen.theatre.name}"></span>
-              </p>
-              <p>
+                <span th:text="${show.screen.theatre.name}"></span><br />
                 <strong>Screen:</strong>
-                <span th:text="${show.screen.name}"></span>
-              </p>
-              <p>
-                <strong>Price:</strong> $<span
-                  th:text="${show.ticketPrice}"
+                <span th:text="${show.screen.name}"></span><br />
+                <strong>Time:</strong> <span th:text="${show.timing}"></span
+                ><br />
+                <strong>Seats:</strong> <span th:text="${selectedSeats}"></span
+                ><br />
+                <strong>Total Amount:</strong> $<span
+                  th:text="${totalAmount}"
                 ></span>
               </p>
-              <a
-                th:href="'/customer/book-show/' + ${show.id}"
-                class="btn btn-primary"
-                >Book Now</a
-              >
+              <button id="rzp-button1" class="btn btn-primary">
+                Pay with Razorpay
+              </button>
             </div>
           </div>
         </div>
       </div>
     </main>
-    <!-- Footer -->
+
     <footer class="footer">
       <div class="container">
         <div class="row">
@@ -221,5 +163,34 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script th:inline="javascript">
+      var options = {
+          "key": /*[[${key}]]*/,
+          "amount": /*[[${totalAmount * 100}]]*/,
+          "currency": "INR",
+          "name": "BookMyMovie",
+          "description": "Movie Ticket Booking",
+          "image": "https://your-logo-url.com/logo.png",
+          "order_id": /*[[${orderId}]]*/,
+          "callback_url": "/customer/confirm-booking/[[${bookingId}]]",
+          "prefill": {
+              "name": /*[[${customer.name}]]*/,
+              "email": /*[[${customer.email}]]*/,
+                          "contact": /*[['+91'+${customer.mobile}]]*/
+                      },
+                      "notes": {
+                          "address": "BookMyMovie Corporate Office"
+                      },
+                      "theme": {
+                          "color": "#032541"
+                      }
+                  };
+                  var rzp1 = new Razorpay(options);
+                  document.getElementById('rzp-button1').onclick = function(e) {
+                      rzp1.open();
+                      e.preventDefault();
+                  }
+    </script>
   </body>
 </html>

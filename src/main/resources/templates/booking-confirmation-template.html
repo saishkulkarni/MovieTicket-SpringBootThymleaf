@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Booking Confirmation</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        color: #333;
+      }
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      .header {
+        background-color: #032541;
+        color: #fff;
+        text-align: center;
+        padding: 10px;
+      }
+      .content {
+        padding: 20px;
+        background-color: #f9f9f9;
+      }
+      .footer {
+        text-align: center;
+        margin-top: 20px;
+        font-size: 0.8em;
+        color: #666;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>Booking Confirmation</h1>
+      </div>
+      <div class="content">
+        <p>Dear <span th:text="${customer.name}"></span>,</p>
+        <p>Your booking has been confirmed. Here are the details:</p>
+        <ul>
+          <li>Movie: <span th:text="${booking.movie.name}"></span></li>
+          <li>
+            Theatre: <span th:text="${booking.show.screen.theatre.name}"></span>
+          </li>
+          <li>Screen: <span th:text="${booking.show.screen.name}"></span></li>
+          <li>
+            Date:
+            <span
+              th:text="${#temporals.format(booking.show.date, 'dd-MM-yyyy')}"
+            ></span>
+          </li>
+          <li>Time: <span th:text="${booking.show.timing}"></span></li>
+          <li>Seats: <span th:text="${booking.seatNumbers}"></span></li>
+          <li>Total Amount: ₹<span th:text="${booking.price}"></span></li>
+        </ul>
+        <p>Thank you for choosing BookMyMovie. Enjoy your movie!</p>
+      </div>
+      <div class="footer">
+        <p>This is an automated email. Please do not reply.</p>
+        <p>© 2023 BookMyMovie. All rights reserved.</p>
+      </div>
+    </div>
+  </body>
+</html>
