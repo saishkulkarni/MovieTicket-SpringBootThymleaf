@@ -175,7 +175,8 @@ public class CustomerController {
 			booking.setShow(show);
 			booking.setSeatNumbers(seats);
 			booking.setBookingTime(LocalDateTime.now());
-
+			bookingRepository.save(booking);
+			System.out.println("===============> "+booking.getId());
 			List<Booking> list = customer.getBookingList();
 			list.add(booking);
 			customer.setBookingList(list);
@@ -203,7 +204,7 @@ public class CustomerController {
 		}
 	}
 
-	@GetMapping("/confirm-booking/{bookingId}")
+	@PostMapping("/confirm-booking/{bookingId}")
 	public String confirmBooking(@PathVariable int bookingId, @RequestParam String razorpay_payment_id,
 			@RequestParam String razorpay_order_id, @RequestParam String razorpay_signature, HttpSession session,
 			ModelMap model) {
@@ -218,7 +219,8 @@ public class CustomerController {
 
 			String qrCodeData = "Booking ID: " + bookingId + ", Customer: " + customer.getName();
 			String qrCodeImage = generateQRCode(qrCodeData);
-			model.put("qrCode", qrCodeImage);
+			model.put("qrCodeImage", qrCodeImage);
+			model.put("booking", booking);
 			session.setAttribute("success", "Booking confirmed successfully!");
 			return "booking-details.html";
 		} else {

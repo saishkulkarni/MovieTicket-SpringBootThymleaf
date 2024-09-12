@@ -106,10 +106,10 @@
                         <p class="card-text">
                             <strong>Theatre:</strong> <span th:text="${booking.show.screen.theatre.name}"></span><br>
                                                     <strong>Screen:</strong> <span th:text="${booking.show.screen.name}"></span><br>
-                                                    <strong>Date:</strong> <span th:text="${#temporals.format(booking.show.date, 'dd-MM-yyyy')}"></span><br>
+                                                    <strong>Date:</strong> <span th:text="${#temporals.format(booking.show.movie.releaseDate, 'dd-MM-yyyy')}"></span><br>
                                                     <strong>Time:</strong> <span th:text="${booking.show.timing}"></span><br>
-                                                    <strong>Seats:</strong> <span th:text="${booking.seats}"></span><br>
-                                                    <strong>Total Amount:</strong> ₹<span th:text="${booking.totalAmount}"></span><br>
+                                                    <strong>Seats:</strong> <span th:text="${booking.seatNumbers}"></span><br>
+                                                    <strong>Total Amount:</strong> ₹<span th:text="${booking.price}"></span><br>
                                                     <strong>Payment ID:</strong> <span th:text="${booking.paymentId}"></span><br>
                                                     <strong>Booking Status:</strong> <span th:text="${booking.booked ? 'Confirmed' : 'Pending'}"></span>
                                                 </p>

@@ -236,7 +236,7 @@ public class TheaterController {
 			int timing = show.getTiming();
 			LocalDate movieDate = show.getMovie().getReleaseDate();
 			LocalDate currentDate = LocalDate.now();
-			if (Period.between(movieDate, currentDate).getDays() >= 0 && Period.between(movieDate, currentDate)
+			if (Period.between(currentDate, movieDate).getDays() >= 0 && Period.between(movieDate, currentDate)
 					.getDays() <= 10) {
 				List<Movie> movies = movieRepository.findByReleaseDate(movieDate);
 				boolean flag = showRepository.existsByScreenAndTimingAndAvailableTrueAndMovieIn(screen, timing, movies);
