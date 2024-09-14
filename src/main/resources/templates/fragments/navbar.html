@@ -1,0 +1,94 @@
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container">
+      <a class="navbar-brand" href="/"
+        ><i class="fas fa-film"></i> BookMyMovie</a
+      >
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/"><i class="fas fa-home"></i> Home</a>
+          </li>
+
+          <th:block
+            th:if="${session.admin==null && session.customer==null && session.theatre==null}"
+          >
+            <li class="nav-item">
+              <a class="nav-link" href="/customer/signup"
+                ><i class="fas fa-user-plus"></i> Register</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/login"
+                ><i class="fas fa-sign-in-alt"></i> Login</a
+              >
+            </li>
+          </th:block>
+
+          <th:block th:if="${session.admin}">
+            <li class="nav-item">
+              <a class="nav-link" href="/admin/approve-theatre"
+                ><i class="fas fa-check-circle"></i> Approve Theatre</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/admin/add-movie"
+                ><i class="fas fa-plus-circle"></i> Add Movie</a
+              >
+            </li>
+          </th:block>
+
+          <th:block th:if="${session.customer}">
+            <li class="nav-item">
+              <a class="nav-link" href="/movies"
+                ><i class="fas fa-film"></i> Movies</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/customer/previous-booking"
+                ><i class="fas fa-history"></i> Previous Bookings</a
+              >
+            </li>
+          </th:block>
+
+          <th:block th:if="${session.theatre}">
+            <li class="nav-item">
+              <a class="nav-link" href="/theatre/add-screen"
+                ><i class="fas fa-plus-circle"></i> Add Screen</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/theatre/add-show"
+                ><i class="fas fa-plus-circle"></i> Add Show</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/theatre/manage-show"
+                ><i class="fas fa-chart-line"></i> Manage Show</a
+              >
+            </li>
+          </th:block>
+
+          <th:block
+            th:if="${session.admin!=null || session.customer!=null || session.theatre!=null}"
+          >
+            <li class="nav-item">
+              <a class="nav-link" href="/logout"
+                ><i class="fas fa-sign-out-alt"></i> Logout</a
+              >
+            </li>
+          </th:block>
+        </ul>
+      </div>
+    </div>
+  </nav>

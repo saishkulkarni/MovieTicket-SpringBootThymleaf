@@ -1,0 +1,18 @@
+.footer {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 30px 0;
+    margin-top: auto;
+  }
+
+  .footer h5 {
+    color: var(--secondary-color);
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+  }
+
+  .footer p {
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+  }

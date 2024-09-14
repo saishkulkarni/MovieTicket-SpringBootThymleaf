@@ -1,0 +1,35 @@
+@media (max-width: 768px) {
+    .hero-title {
+      font-size: 2.5rem;
+    }
+
+    .hero-subtitle {
+      font-size: 1.2rem;
+    }
+
+    .carousel-item img {
+      height: 400px;
+    }
+
+    .movie-title {
+      font-size: 1.5rem;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .hero-section {
+      padding: 100px 0;
+    }
+
+    .hero-title {
+      font-size: 2rem;
+    }
+
+    .carousel-item img {
+      height: 300px;
+    }
+
+    .movie-title {
+      font-size: 1.2rem;
+    }
+  }

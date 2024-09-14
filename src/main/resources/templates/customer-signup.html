@@ -1,394 +1,149 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>BookMyMovie - Customer Registration</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-      rel="stylesheet"
-    />
-    <style>
-      :root {
-        --primary-color: #032541;
-        --secondary-color: #01b4e4;
-        --background-color: #f8f9fa;
-        --text-color: #333;
-      }
+<head>
+  <title>BookMyMovie - Customer Registration</title>
+  <th:block th:insert="~{fragments/head.html}" />
+  <link rel="stylesheet" href="/css/customer-signup.css">
+</head>
+<body>
+  <th:block th:insert="~{/fragments/navbar.html}" />
 
-      body {
-        font-family: "Arial", sans-serif;
-        background-color: var(--background-color);
-        color: var(--text-color);
-        display: flex;
-        flex-direction: column;
-        min-height: 100vh;
-      }
-
-      /* Navbar styles */
-      .navbar {
-        background-color: var(--primary-color);
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      }
-
-      .navbar-brand {
-        font-weight: bold;
-        font-size: 1.5rem;
-        color: var(--secondary-color) !important;
-      }
-
-      .nav-link {
-        font-weight: 500;
-        color: #fff !important;
-        transition: color 0.3s ease;
-      }
-
-      .nav-link:hover {
-        color: var(--secondary-color) !important;
-      }
-
-      /* Main content styles */
-      main {
-        flex: 1 0 auto;
-      }
-
-      .hero-section {
-        background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
-          url("/images/bg1.jpg");
-        background-size: cover;
-        background-position: center;
-        color: white;
-        padding: 100px 0;
-        text-align: center;
-      }
-
-      .hero-title {
-        font-size: 3.5rem;
-        font-weight: bold;
-        margin-bottom: 1rem;
-      }
-
-      .hero-subtitle {
-        font-size: 1.5rem;
-        margin-bottom: 2rem;
-      }
-
-      .btn-primary {
-        background-color: var(--secondary-color);
-        border-color: var(--secondary-color);
-        padding: 12px 24px;
-        font-weight: bold;
-        transition: all 0.3s ease;
-      }
-
-      .btn-primary:hover {
-        background-color: #0099c9;
-        border-color: #0099c9;
-        transform: translateY(-2px);
-      }
-
-      /* Footer styles */
-      .footer {
-        background-color: var(--primary-color);
-        color: white;
-        padding: 10px 0;
-        margin-top: auto;
-      }
-
-      .footer h5 {
-        color: var(--secondary-color);
-        font-weight: bold;
-      }
-
-      .footer p {
-        margin-bottom: 0.5rem;
-      }
-
-      /* Form styles */
-      .form-container {
-        background-color: white;
-        padding: 30px;
-        border-radius: 5px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      }
-
-      .error {
-        color: red;
-        font-size: 0.9em;
-      }
-
-      /* Alert styles */
-      .alert-container {
-        position: fixed;
-        top: 70px;
-        left: 20px;
-        z-index: 1000;
-        width: 80%;
-        max-width: 500px;
-      }
-
-      /* Responsive styles */
-      @media (max-width: 768px) {
-        .hero-title {
-          font-size: 2rem;
-        }
-
-        .hero-subtitle {
-          font-size: 1rem;
-        }
-      }
-
-      @media (max-width: 576px) {
-        .hero-section {
-          padding: 50px 0;
-        }
-
-        .hero-title {
-          font-size: 1.75rem;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark">
-      <div class="container">
-        <a class="navbar-brand" href="/"
-          ><i class="fas fa-film"></i> BookMyMovie</a
-        >
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNav"
-          aria-controls="navbarNav"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav ms-auto">
-            <li class="nav-item">
-              <a class="nav-link" href="/"><i class="fas fa-home"></i> Home</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/customer/signup"
-                ><i class="fas fa-user-plus"></i> Register</a
-              >
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/login"
-                ><i class="fas fa-sign-in-alt"></i> Login</a
-              >
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-
-    <!-- Main Content -->
-    <main>
-      <div class="alert-container">
-        <div
-          class="alert alert-success alert-dismissible fade show text-center"
-          th:if="${session.success}"
-          role="alert"
-        >
-          <span th:text="${session.success}"></span>
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="alert"
-            aria-label="Close"
-          ></button>
-        </div>
-
-        <div
-          class="alert alert-danger alert-dismissible fade show text-center"
-          th:if="${session.failure}"
-          role="alert"
-        >
-          <span th:text="${session.failure}"></span>
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="alert"
-            aria-label="Close"
-          ></button>
-        </div>
-      </div>
-
-      <th:block th:text="${@sessionMessageRemover.removeMessage()}"></th:block>
-
-      <script>
-        setTimeout(function () {
-          var alerts = document.querySelectorAll(".alert");
-          alerts.forEach(function (alert) {
-            var bsAlert = new bootstrap.Alert(alert);
-            bsAlert.close();
-          });
-        }, 3000);
-      </script>
-
-      <div class="container mt-5">
-        <div class="row justify-content-center">
-          <div class="col-md-8">
-            <div class="form-container">
-              <h2 class="text-center mb-4">Customer Registration</h2>
-              <form
-                action="/customer/signup"
-                method="post"
-                th:object="${customer}"
-              >
-                <div class="mb-3">
-                  <label for="name" class="form-label">Name</label>
-                  <input
-                    th:field="*{name}"
-                    type="text"
-                    class="form-control"
-                    id="name"
-                    name="name"
-                  />
-                  <span th:errors="*{name}" class="error"></span>
-                </div>
-                <div class="mb-3">
-                  <label for="mobile" class="form-label">Mobile</label>
-                  <input
-                    th:field="*{mobile}"
-                    type="tel"
-                    class="form-control"
-                    id="mobile"
-                    name="mobile"
-                  />
-                  <span th:errors="*{mobile}" class="error"></span>
-                </div>
-                <div class="mb-3">
-                  <label for="email" class="form-label">Email</label>
-                  <input
-                    th:field="*{email}"
-                    type="email"
-                    class="form-control"
-                    id="email"
-                    name="email"
-                  />
-                  <span th:errors="*{email}" class="error"></span>
-                </div>
-                <div class="mb-3">
-                  <label for="password" class="form-label">Password</label>
-                  <input
-                    th:field="*{password}"
-                    type="password"
-                    class="form-control"
-                    id="password"
-                    name="password"
-                  />
-                  <span th:errors="*{password}" class="error"></span>
-                </div>
-                <div class="mb-3">
-                  <label for="confirmPassword" class="form-label"
-                    >Confirm Password</label
-                  >
-                  <input
-                    th:field="*{confirmPassword}"
-                    type="password"
-                    class="form-control"
-                    id="confirmPassword"
-                    name="confirmPassword"
-                  />
-                  <span th:errors="*{confirmPassword}" class="error"></span>
-                </div>
-                <div class="mb-3">
-                  <label class="form-label">Gender</label>
-                  <div>
-                    <div class="form-check form-check-inline">
-                      <input
-                        th:field="*{gender}"
-                        class="form-check-input"
-                        type="radio"
-                        name="gender"
-                        id="male"
-                        value="male"
-                      />
-                      <label class="form-check-label" for="male">Male</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                      <input
-                        th:field="*{gender}"
-                        class="form-check-input"
-                        type="radio"
-                        name="gender"
-                        id="female"
-                        value="female"
-                      />
-                      <label class="form-check-label" for="female"
-                        >Female</label
-                      >
-                    </div>
-                    <div class="form-check form-check-inline">
-                      <input
-                        th:field="*{gender}"
-                        class="form-check-input"
-                        type="radio"
-                        name="gender"
-                        id="other"
-                        value="other"
-                      />
-                      <label class="form-check-label" for="other">Other</label>
-                    </div>
-                    <span th:errors="*{gender}" class="error"></span>
-                  </div>
-                </div>
-                <div class="mb-3">
-                  <label for="dob" class="form-label">Date of Birth</label>
-                  <input
-                    th:field="*{dob}"
-                    type="date"
-                    class="form-control"
-                    id="dob"
-                    name="dob"
-                  />
-                  <span th:errors="*{dob}" class="error"></span>
-                </div>
-                <div class="d-grid">
-                  <button type="submit" class="btn btn-primary">
-                    Register
-                  </button>
-                </div>
-              </form>
-              <div class="mt-3 text-center">
-                <p>
-                  Want to register as a theatre?
-                  <a href="/theatre/signup">Click here</a>
-                </p>
+  <th:block th:insert="~{/fragments/message.html}" />
+  
+  <main>
+    <div class="container mt-5">
+      <div class="row justify-content-center">
+        <div class="col-md-8">
+          <div class="form-container">
+            <h2 class="text-center mb-4">Customer Registration</h2>
+            <form action="/customer/signup" method="post" th:object="${customer}">
+              <div class="mb-3">
+                <label for="name" class="form-label">Name</label>
+                <input
+                  th:field="*{name}"
+                  type="text"
+                  class="form-control"
+                  id="name"
+                  name="name"
+                />
+                <span th:errors="*{name}" class="error"></span>
               </div>
+              <div class="mb-3">
+                <label for="mobile" class="form-label">Mobile</label>
+                <input
+                  th:field="*{mobile}"
+                  type="tel"
+                  class="form-control"
+                  id="mobile"
+                  name="mobile"
+                />
+                <span th:errors="*{mobile}" class="error"></span>
+              </div>
+              <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input
+                  th:field="*{email}"
+                  type="email"
+                  class="form-control"
+                  id="email"
+                  name="email"
+                />
+                <span th:errors="*{email}" class="error"></span>
+              </div>
+              <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input
+                  th:field="*{password}"
+                  type="password"
+                  class="form-control"
+                  id="password"
+                  name="password"
+                />
+                <span th:errors="*{password}" class="error"></span>
+              </div>
+              <div class="mb-3">
+                <label for="confirmPassword" class="form-label"
+                  >Confirm Password</label
+                >
+                <input
+                  th:field="*{confirmPassword}"
+                  type="password"
+                  class="form-control"
+                  id="confirmPassword"
+                  name="confirmPassword"
+                />
+                <span th:errors="*{confirmPassword}" class="error"></span>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Gender</label>
+                <div>
+                  <div class="form-check form-check-inline">
+                    <input
+                      th:field="*{gender}"
+                      class="form-check-input"
+                      type="radio"
+                      name="gender"
+                      id="male"
+                      value="male"
+                    />
+                    <label class="form-check-label" for="male">Male</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input
+                      th:field="*{gender}"
+                      class="form-check-input"
+                      type="radio"
+                      name="gender"
+                      id="female"
+                      value="female"
+                    />
+                    <label class="form-check-label" for="female"
+                      >Female</label
+                    >
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input
+                      th:field="*{gender}"
+                      class="form-check-input"
+                      type="radio"
+                      name="gender"
+                      id="other"
+                      value="other"
+                    />
+                    <label class="form-check-label" for="other">Other</label>
+                  </div>
+                  <span th:errors="*{gender}" class="error"></span>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="dob" class="form-label">Date of Birth</label>
+                <input
+                  th:field="*{dob}"
+                  type="date"
+                  class="form-control"
+                  id="dob"
+                  name="dob"
+                />
+                <span th:errors="*{dob}" class="error"></span>
+              </div>
+              <div class="d-grid">
+                <button type="submit" class="btn btn-primary">
+                  Register
+                </button>
+              </div>
+            </form>
+            <div class="mt-3 text-center">
+              <p>Want to register as a theatre? <a href="/theatre/signup">Click here</a></p>
             </div>
           </div>
         </div>
       </div>
-    </main>
+    </div>
+  </main>
 
-    <!-- Footer -->
-    <footer class="footer">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-6 mb-3 mb-md-0">
-            <h5>BookMyMovie</h5>
-            <p>Your one-stop solution for movie ticket booking.</p>
-          </div>
-          <div class="col-md-6 text-md-end">
-            <h5>Contact Us</h5>
-            <p>Email: info@bookmymovie.com</p>
-            <p>Phone: 1-800-BOOK-NOW</p>
-          </div>
-        </div>
-      </div>
-    </footer>
+  <th:block th:insert="~{/fragments/footer.html}" />
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-  </body>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/js/alert.js"></script>
+</body>
 </html>

@@ -1,0 +1,32 @@
+<div class="alert-container">
+    <div
+      class="alert alert-success alert-dismissible fade show text-center"
+      th:if="${session.success}"
+      role="alert"
+    >
+      <span th:text="${session.success}"></span>
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="alert"
+        aria-label="Close"
+      ></button>
+    </div>
+
+    <div
+      class="alert alert-danger alert-dismissible fade show text-center"
+      th:if="${session.failure}"
+      role="alert"
+    >
+      <span th:text="${session.failure}"></span>
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="alert"
+        aria-label="Close"
+      ></button>
+    </div>
+  </div>
+
+  <th:block th:text="${@sessionMessageRemover.removeMessage()}"></th:block>
+  
